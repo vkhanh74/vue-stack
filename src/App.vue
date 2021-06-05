@@ -3,7 +3,7 @@
     <h1 class="title">todos</h1>
     <div class="content-container">
       <SearchBar />
-      <TaskList v-bind:data="tasks" />
+      <TaskList />
       <Controller />
     </div>
   </div>
@@ -16,15 +16,6 @@ import Controller from './components/Controller';
 
 export default {
   name: 'App',
-  data() {
-    return {
-      tasks: [
-        { id: 1, name: 'Wakeup', isDone: true },
-        { id: 2, name: 'Clean tooth', isDone: true },
-        { id: 3, name: 'Take a shower', isDone: false },
-      ],
-    };
-  },
   components: {
     SearchBar,
     TaskList,

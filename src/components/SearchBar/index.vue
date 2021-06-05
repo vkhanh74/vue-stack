@@ -5,7 +5,11 @@
       v-on:click="onCheckAllTask"
       class="task-checkbox"
     >
-      <img class="task-checkbox-icon" src="@/assets/checked.png" />
+      <img
+        v-if="isAllTaskChecked"
+        class="task-checkbox-icon"
+        src="@/assets/checked.png"
+      />
     </a>
     <input class="new-todo" type="text" v-bind:placeholder="placeholder" />
   </div>
@@ -24,7 +28,7 @@ export default {
       return this.$store.getters.getTask;
     },
     isAllTaskChecked() {
-      return this.$store.getters.getTask.find(task => !task.isDone);
+      return !this.$store.getters.getTask.find(task => !task.isDone);
     },
     onCheckAllTask() {
       return () => this.$store.commit('checkAllTask');
