@@ -28,6 +28,8 @@ export default {
 body {
   font-family: 'Helvetica Neue', sans-serif;
   background-color: #f5f5f5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .title {

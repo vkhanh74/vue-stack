@@ -11,17 +11,36 @@
         src="@/assets/checked.png"
       />
     </a>
-    <input class="new-todo" type="text" v-bind:placeholder="placeholder" />
+    <input
+      class="new-todo"
+      type="text"
+      v-model="search"
+      v-bind:placeholder="placeholder"
+      v-on:keyup.enter="onAddTask"
+    />
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'SearchBar',
   data() {
     return {
+      search: '',
       placeholder: 'What needs to be done?',
     };
+  },
+  methods: {
+    ...mapActions(['addTask', 'checkAllTask']),
+    onAddTask() {
+      this.addTask({ name: this.search });
+      this.search = '';
+    },
+    onCheckAllTask() {
+      this.checkAllTask();
+    },
   },
   computed: {
     tasks() {
@@ -29,9 +48,6 @@ export default {
     },
     isAllTaskChecked() {
       return !this.$store.getters.getTask.find(task => !task.isDone);
-    },
-    onCheckAllTask() {
-      return () => this.$store.commit('checkAllTask');
     },
   },
 };
@@ -54,8 +70,6 @@ export default {
   border: none;
   font-size: 24px;
   width: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .new-todo::placeholder {

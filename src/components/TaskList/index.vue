@@ -20,7 +20,9 @@ export default {
     TaskItem,
   },
   computed: {
-    ...mapState(['tasks']),
+    ...mapState({
+      tasks: state => state.tasks.list,
+    }),
   },
   methods: {
     onCheck(id) {
