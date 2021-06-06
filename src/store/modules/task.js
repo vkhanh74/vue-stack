@@ -32,13 +32,29 @@ const taskModule = {
         isDone: !!isAllTaskChecked,
       }));
     },
+    removeTask(state, payload) {
+      const tasks = state.list;
+      state.list = tasks.filter(item => item.id !== payload);
+    },
+    removeCheckedTask(state) {
+      state.list = state.list.filter(item => !item.isDone);
+    },
   },
   actions: {
     addTask(context, { name }) {
       context.commit('addTask', name);
     },
+    checkTask(context, { id }) {
+      context.commit('checkTask', id);
+    },
     checkAllTask(context) {
       context.commit('checkAllTask');
+    },
+    removeTask(context, { id }) {
+      context.commit('removeTask', id);
+    },
+    removeCheckedTask(context) {
+      context.commit('removeCheckedTask');
     },
   },
 };

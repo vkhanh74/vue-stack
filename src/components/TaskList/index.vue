@@ -4,6 +4,7 @@
       <TaskItem
         v-bind:key="task.id"
         v-on:onCheck="onCheck"
+        v-on:onRemove="onRemove"
         v-bind:data="task"
       />
     </template>
@@ -11,7 +12,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import TaskItem from '../TaskItem';
 
 export default {
@@ -25,8 +26,12 @@ export default {
     }),
   },
   methods: {
+    ...mapActions(['checkTask', 'removeTask']),
     onCheck(id) {
-      this.$store.commit('checkTask', id);
+      this.checkTask({ id });
+    },
+    onRemove(id) {
+      this.removeTask({ id });
     },
   },
   data() {

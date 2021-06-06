@@ -6,7 +6,7 @@
       class="task-checkbox"
     >
       <img
-        v-if="isAllTaskChecked"
+        v-if="shouldHideCheckIcon"
         class="task-checkbox-icon"
         src="@/assets/checked.png"
       />
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'SearchBar',
@@ -43,11 +43,11 @@ export default {
     },
   },
   computed: {
-    tasks() {
-      return this.$store.getters.getTask;
-    },
-    isAllTaskChecked() {
-      return !this.$store.getters.getTask.find(task => !task.isDone);
+    ...mapState({
+      tasks: state => state.tasks.list,
+    }),
+    shouldHideCheckIcon() {
+      return !this.tasks.find(task => !task.isDone) && !!this.tasks.length;
     },
   },
 };
@@ -70,6 +70,8 @@ export default {
   border: none;
   font-size: 24px;
   width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .new-todo::placeholder {

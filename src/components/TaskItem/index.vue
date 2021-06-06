@@ -1,6 +1,6 @@
 <template>
   <li class="task-item">
-    <a href="javascript:void(0)" v-on:click="onCheck" class="task-checkbox">
+    <a href="#" v-on:click.prevent="onCheck" class="task-checkbox">
       <img
         v-if="data.isDone"
         class="task-checkbox-icon"
@@ -8,7 +8,9 @@
       />
     </a>
     <span class="task-name">{{ data.name }}</span>
-    <!-- {{ selectedTask }} -->
+    <a href="#" v-on:click.prevent="onRemove" class="task-remove">
+      <img class="task-checkbox-icon" src="@/assets/cancel.png" />
+    </a>
   </li>
 </template>
 
@@ -18,6 +20,9 @@ export default {
   methods: {
     onCheck() {
       this.$emit('onCheck', this.data.id);
+    },
+    onRemove() {
+      this.$emit('onRemove', this.data.id);
     },
   },
   props: {
@@ -41,11 +46,15 @@ export default {
   border: 1px solid #ededed;
   border-radius: 999px;
   height: 25px;
-  width: 25px;
+  min-width: 25px;
   margin-right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.task-remove {
+  margin-left: auto;
 }
 
 .task-checkbox-icon {
@@ -61,5 +70,6 @@ export default {
   font-size: 24px;
   color: #4d4d4d;
   font-weight: 300;
+  margin-right: 20px;
 }
 </style>

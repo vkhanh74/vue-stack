@@ -1,6 +1,8 @@
 <template>
-  <div class="controller">
-    <span class="controller-counter">2 item left</span>
+  <div class="controller" v-if="shouldShowSearchBar">
+    <span class="controller-counter"
+      >{{ countNumberOfActiveTask }} item left</span
+    >
     <ul class="controller-filter">
       <li
         v-bind:key="item.key"
@@ -12,6 +14,13 @@
         </a>
       </li>
     </ul>
+    <a
+      href="#"
+      class="controller-completed"
+      v-on:click.prevent="onRemoveCheckedTask"
+      v-if="shouldShowClearButton"
+      >Clear completed</a
+    >
   </div>
 </template>
 
@@ -22,6 +31,7 @@ export default {
   name: 'Controller',
   data() {
     return {
+      itemLeft: 0,
       filters: [
         { key: 'all', title: 'All' },
         { key: 'active', title: 'Active' },
@@ -30,15 +40,29 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['setFilterKey']),
+    ...mapActions(['setFilterKey', 'removeCheckedTask']),
     onSetFilterKey(key) {
       this.setFilterKey({ key });
+    },
+    onRemoveCheckedTask() {
+      this.removeCheckedTask();
     },
   },
   computed: {
     ...mapState({
       filterKey: state => state.common.filterKey,
+      tasks: state => state.tasks.list,
     }),
+
+    shouldShowClearButton() {
+      return this.tasks.find(task => task.isDone);
+    },
+    shouldShowSearchBar() {
+      return !!this.tasks.length;
+    },
+    countNumberOfActiveTask() {
+      return this.tasks.filter(task => !task.isDone).length;
+    },
   },
 };
 </script>
@@ -51,6 +75,18 @@ export default {
   font-weight: 300;
   font-size: 14px;
   color: #777;
+}
+
+.controller-completed {
+  text-align: right;
+  font-weight: 300;
+  font-size: 14px;
+  color: #777;
+  text-decoration: none;
+}
+
+.controller-completed:hover {
+  text-decoration: underline;
 }
 
 .controller-counter {
